@@ -1,0 +1,32 @@
+# Python (временные файлы) 🐍
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django (секреты и база) 🛡️
+.env
+db.sqlite3
+local_settings.py
+
+# Пользовательский контент (медиа) 🖼️
+media/
+
+# Статические файлы (собранные collectstatic)
+staticfiles/
+
+# Docker и базы данных 🐳
+pg_data/
+celerybeat-schedule
+dump.rdb
+
+# Настройки редакторов кода 💻
+.idea/
+.vscode/
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Celery
+celerybeat-schedule
