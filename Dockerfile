@@ -19,4 +19,5 @@ COPY . .
 RUN pip install gunicorn
 
 # Запускаем сервер (замени 'config' на имя папки, где лежит wsgi.py)
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:10000"]
+#CMD ["python manage.py migrate", "gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:10000"]
+CMD python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-10000}
