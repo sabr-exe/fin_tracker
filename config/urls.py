@@ -13,5 +13,5 @@ urlpatterns = [
     # Добавляем отдельные пути для корня
     path('', RateChartView.as_view(), name='home'),  # корень показывает график
     path('rates/', include('rates.urls')),  # всё из rates доступно по /rates/
-    path('api/update-rates/', update_rates_api, name='update_rates'), #для рендер
+
 ]
