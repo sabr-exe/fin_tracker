@@ -135,8 +135,8 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_BEAT_SCHEDULE = {
     'fetch-rates-every-minute': {
         'task': 'rates.tasks.fetch_currency_rates',
-        'schedule': crontab(minute=0, hour='*/1'),  # Каждый час
-        #'schedule': 60.0,  # Каждые 60 секунд
+        #'schedule': crontab(minute=0, hour='*/1'),  # Каждый час
+        'schedule': 60.0,  # Каждые 60 секунд
     },
 }
 
