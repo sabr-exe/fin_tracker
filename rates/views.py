@@ -81,3 +81,36 @@ class RateChartView(View):
         }
         
         return render(request, 'rates/chart.html', context)
+    
+
+
+
+
+    # rates/views.py для РЕНДЕР
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import requests
+from django.utils import timezone
+from .models import CurrencyRate
+
+@csrf_exempt
+def update_rates_api(request):
+    """API для обновления курсов (вызывается по Cron)"""
+    if request.method == 'POST':
+        try:
+            # Ваш код обновления курсов
+            response = requests.get('https://api.exchangerate-api.com/v4/latest/USD')
+            data = response.json()
+            
+            for currency, rate in data['rates'].items():
+                if currency in ['USD', 'EUR', 'RUB', 'KZT']:
+                    CurrencyRate.objects.update_or_create(
+                        currency=currency,
+                        defaults={'rate': rate, 'last_updated': timezone.now()}
+                    )
+            
+            return JsonResponse({'status': 'success', 'updated': timezone.now()})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Use POST method'}, status=400)

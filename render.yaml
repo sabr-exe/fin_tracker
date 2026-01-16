@@ -1,58 +1,28 @@
+version: 1
+
 services:
-  # 1. Веб-сервис (Django)
+  # 1. Главный веб-сервис (Django)
   - type: web
-    name: currency-tracker-web
+    name: fin-tracker
     env: docker
-    repo: https://github.com/sabr-exe/fin_tracker 
-    plan: free # Бесплатный тариф
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: currency-db
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: currency-redis
-          property: connectionString
-
-  # 2. Celery Worker (Выполняет задачи)        
-  - type: worker
-    name: currency-tracker-worker
-    env: docker
-    dockerCommand: celery -A config -A worker -l info
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: currency-db
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: currency-redis
-          property: connectionString
-
-  # 3. Celery Beat (Запускает задачи по расписанию)
-  - type: worker
-    name: currency-tracker-beat
-    env: docker
-    dockerCommand: celery -A config beat -l info
-    envVars:
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: currency-redis
-          property: connectionString
-  # 4. Redis (Брокер сообщений)
-  - type: redis
-    name: currency-redis
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     plan: free
-    ipAllowList: [] # Позволяет сервисам Render подключаться внутри сети          
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fin-tracker-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
 
 databases:
-  # 5. PostgreSQL (База данных)
-  - name: currency-db
+  # 2. База данных
+  - name: fin-tracker-db
     plan: free
-
-
-
+    databaseName: fin_tracker
