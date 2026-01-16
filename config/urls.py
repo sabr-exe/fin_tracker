@@ -3,8 +3,7 @@
 # config/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import redirect
-from rates.views import RateChartView, update_rates_api  # импортируем view
+from rates.views import RateChartView # импортируем view
 
 urlpatterns = [
     path('admin/', admin.site.urls),

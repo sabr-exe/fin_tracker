@@ -4,7 +4,7 @@ from .models import CurrencyRate
 from .serializers import CurrencyRateSerializer
 from django.shortcuts import render
 from django.views import View
-
+from django.utils import timezone
 
 
 class CurrencyRateListView(ListAPIView):
@@ -13,13 +13,7 @@ class CurrencyRateListView(ListAPIView):
 
 
 # views.py (упрощенная версия без API)
-import json
-from datetime import timedelta
-from django.views import View
-from django.shortcuts import render
-from django.db.models import Avg, Max, Min
-from django.utils import timezone
-from .models import CurrencyRate
+
 
 class RateChartView(View):
     def get(self, request, currency='USD'):
